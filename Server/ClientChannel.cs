@@ -52,6 +52,8 @@ namespace Server
 
             if (_authorized)
                 ClientDisconnected?.Invoke(this, EventArgs.Empty);
+
+            Socket.Dispose();
         }
 
         public void Send(ChatPDU pdu)
