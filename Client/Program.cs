@@ -1,5 +1,6 @@
 ﻿using ChatProtocol;
 using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace Client
@@ -16,6 +17,20 @@ namespace Client
 
         private static void Send(Socket socket, ChatPDU chatPdu)
         {
+            var bytes = chatPdu.Serialize();
+
+            try
+            {
+                var position = 0;
+                do
+                {
+                    position += socket.Send(bytes, position, bytes.Length - position, SocketFlags.None);
+                } while (position < bytes.Length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
